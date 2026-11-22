@@ -27,12 +27,35 @@ Sign in as `admin@example.com` / `secret123`.
 
 | | |
 | --- | --- |
-| [`src/api/client.ts`](./src/api/client.ts) | The one client. What holds for every request is a middleware in its list: failures are told to the user (`onError`), an expired token is refreshed (`refreshToken`), the token goes along (`tokenAuth`), look-ups are cached (`cache`), a search that was overtaken is cancelled (`cancel`) |
+| [`src/api/client.ts`](./src/api/client.ts) | The one client. What holds for every request is a middleware in its list: failures are told to the user (`onError`), an expired token is refreshed (`refreshToken`), the token goes along (`tokenAuth`) |
+| [`src/api/queries.ts`](./src/api/queries.ts) | What comes from the server, kept by [TanStack Query](https://tanstack.com/query): loading and failed states, a cache the pages share, requests that are cancelled when nobody waits for them, and which failures are worth another try |
 | [`src/api/attendees.ts`](./src/api/attendees.ts) | The operations: typed functions that say what they want and nothing else |
 | [`src/forms/attendee.ts`](./src/forms/attendee.ts) | The form of an attendee as a class: its fields, their rules, a list of rows, choices loaded from the API, an email checked with the server while the user types, a rule about two fields from a Zod schema |
 | [`src/lib/formRequest.ts`](./src/lib/formRequest.ts) | The bridge: what the server refuses is shown on the fields it is about |
 | [`src/pages`](./src/pages) | The three pages |
 | [`server/index.mjs`](./server/index.mjs) | The stand-in API |
+
+## Requests and their state
+
+Punica Request sends; it does not keep what came back. The pages get that
+from TanStack Query, and the two fit without glue:
+
+```ts
+queryOptions({
+  queryKey: ['attendees', 'list', { q, page }],
+  // The signal of the query cancels the request: a search that was
+  // overtaken by a newer one never arrives
+  queryFn: ({ signal }) => listAttendees(q, page, signal)
+});
+```
+
+The errors of the client say what is worth another try: an `HttpError` is an
+answer, whatever its status, and is not asked for again; a `RequestError`
+(offline, too slow) is, twice. After a change a mutation invalidates
+`['attendees']`, and the list and the figures above it follow.
+
+An application without a query layer has the `cache` and `cancel`
+middlewares of Punica Request for the same two jobs.
 
 ## The bridge between a form and a request
 

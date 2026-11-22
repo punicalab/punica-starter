@@ -3,6 +3,7 @@ import type {} from '@punica/components/react';
 import { Link, Navigate, Route, Routes, useLocation, useNavigate } from 'react-router';
 import { signOut } from './api/auth';
 import { session, whenSessionIsOver } from './api/client';
+import { queryClient } from './api/queries';
 import { Logo, SignOutIcon } from './components/Icons';
 import { AttendeeFormPage } from './pages/AttendeeForm';
 import { Attendees } from './pages/Attendees';
@@ -18,7 +19,10 @@ export function App() {
 
   // The client says when a session cannot be continued
   useEffect(() => {
-    whenSessionIsOver(() => navigate('/login', { replace: true, state: { expired: true } }));
+    whenSessionIsOver(() => {
+      queryClient.clear();
+      navigate('/login', { replace: true, state: { expired: true } });
+    });
   }, [navigate]);
 
   return (

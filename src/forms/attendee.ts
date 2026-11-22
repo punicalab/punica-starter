@@ -11,8 +11,9 @@ import {
 } from '@punica/form-kit';
 import { Schema, SchemaValidation } from '@punica/form-schema';
 import { z } from 'zod';
-import { isEmailAvailable, listCountries } from '../api/attendees';
+import { isEmailAvailable } from '../api/attendees';
 import type { Attendee } from '../api/attendees';
+import { queries, queryClient } from '../api/queries';
 import { ServerErrors } from '../lib/formRequest';
 
 /** A row of the tickets. */
@@ -72,7 +73,8 @@ export const attendeeForm = (attendee?: Attendee) => {
 
     @SelectField({
       label: 'Country',
-      options: async () => listCountries(),
+      // From the cache of the queries: asked for once, however many forms show them
+      options: () => queryClient.ensureQueryData(queries.countries()),
       required: true
     })
     country = attendee?.country ?? '';

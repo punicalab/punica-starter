@@ -1,8 +1,10 @@
 // The one client of the application. Whatever holds for every request is a
-// middleware in this list; a page only says what it wants.
-import { createClient, deleteCookie, getCookie, setCookie, when } from '@punica/request';
+// middleware in this list; a page only says what it wants. Caching and
+// cancelling are the business of the query layer (src/api/queries.ts); an
+// application without one has the `cache` and `cancel` middlewares for them.
+import { createClient, deleteCookie, getCookie, setCookie } from '@punica/request';
 import { fetchAdapter } from '@punica/request-fetch';
-import { cache, cancel, onError, refreshToken, StorageSession, tokenAuth } from '@punica/request-middleware';
+import { onError, refreshToken, tokenAuth } from '@punica/request-middleware';
 import { notify } from '../lib/notify';
 
 declare module '@punica/request' {
@@ -40,9 +42,6 @@ export const whenSessionIsOver = (handler: () => void) => {
   onSessionOver = handler;
 };
 
-/** Cancels a search when a newer one is made. */
-export const latestSearch = cancel();
-
 export const api = createClient({
   baseURL: import.meta.env.VITE_API_URL,
   adapter: fetchAdapter(),
@@ -73,8 +72,6 @@ export const api = createClient({
       },
       exclude: (context) => context.url.pathname.includes('/auth/')
     }),
-    tokenAuth({ cookieName: TOKEN }),
-    cache({ storage: new StorageSession({ prefix: 'starter:' }) }),
-    when((context) => context.method === 'GET' && context.url.pathname.endsWith('/attendees'), latestSearch)
+    tokenAuth({ cookieName: TOKEN })
   ]
 });

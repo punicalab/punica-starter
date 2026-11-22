@@ -1,12 +1,14 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { confirm } from '@punica/components';
 import type { FormController } from '@punica/form';
 import type { KitItem } from '@punica/form-kit';
 import { FormView } from '@punica/form-kit/react';
 import { useForm, useFormController, useFormState } from '@punica/form-react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Link, useNavigate, useParams } from 'react-router';
-import { getAttendee, saveAttendee, uploadBadge } from '../api/attendees';
-import type { Attendee } from '../api/attendees';
+import { saveAttendee, uploadBadge } from '../api/attendees';
+import type { Attendee, AttendeeInput } from '../api/attendees';
+import { queries } from '../api/queries';
 import { attendeeForm } from '../forms/attendee';
 import type { AttendeeValues } from '../forms/attendee';
 import { submitTo } from '../lib/formRequest';
@@ -18,20 +20,13 @@ type Controller = FormController<AttendeeValues, KitItem<AttendeeValues>>;
 export function AttendeeFormPage() {
   const params = useParams();
   const id = params.id === undefined ? undefined : Number(params.id);
-  const [attendee, setAttendee] = useState<Attendee>();
-  const [missing, setMissing] = useState(false);
-
-  useEffect(() => {
-    if (id === undefined) return;
-
-    const leaving = new AbortController();
-
-    getAttendee(id, leaving.signal)
-      .then(setAttendee)
-      .catch(() => setMissing(!leaving.signal.aborted));
-
-    return () => leaving.abort();
-  }, [id]);
+  // A form starts from what the server holds now, not from what a list showed a while ago
+  const { data: attendee, isError: missing } = useQuery({
+    ...queries.one(id ?? 0),
+    enabled: id !== undefined,
+    staleTime: 0,
+    gcTime: 0
+  });
 
   if (missing) {
     return (
@@ -52,6 +47,18 @@ export function AttendeeFormPage() {
 
 function Editor({ attendee }: { attendee?: Attendee }) {
   const navigate = useNavigate();
+  const cache = useQueryClient();
+  const saving = useMutation({
+    mutationFn: async ({ input, badge }: { input: AttendeeInput; badge?: File }) => {
+      const saved = await saveAttendee(input, attendee?.id);
+
+      if (badge) await uploadBadge(saved.id, badge);
+
+      return saved;
+    },
+    // The list, the figures and this attendee are asked for again
+    onSuccess: () => cache.invalidateQueries({ queryKey: queries.attendees })
+  });
   const Form = useMemo(() => attendeeForm(attendee), [attendee]);
   const { controller, error } = useFormController<AttendeeValues, KitItem<AttendeeValues>>(() => new Form());
   const title = attendee ? attendee.name : 'New attendee';
@@ -88,18 +95,17 @@ function Editor({ attendee }: { attendee?: Attendee }) {
               // What the server refuses is shown by the form
               onError={() => undefined}
               onSubmit={async ({ badge, ...values }) => {
+                // What the server refuses goes onto the fields; the mutation keeps the caches right
                 const saved = await submitTo(controller, () =>
-                  saveAttendee(
-                    {
+                  saving.mutateAsync({
+                    badge,
+                    input: {
                       ...values,
                       birthDate: values.birthDate ?? '',
                       tickets: values.tickets.map(({ session, quantity }) => ({ session, quantity: quantity ?? 0 }))
-                    },
-                    attendee?.id
-                  )
+                    }
+                  })
                 );
-
-                if (badge) await submitTo(controller, () => uploadBadge(saved.id, badge));
 
                 notify(`${saved.name} was saved`, 'success');
                 navigate('/');

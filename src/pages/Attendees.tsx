@@ -1,9 +1,10 @@
-import { useEffect, useState, type ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import { confirm } from '@punica/components';
-import { isRequestError } from '@punica/request';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router';
-import { deleteAttendee, getSummary, listAttendees, listCountries, PAGE_SIZE } from '../api/attendees';
-import type { Attendee, Page, Summary } from '../api/attendees';
+import { deleteAttendee, PAGE_SIZE } from '../api/attendees';
+import type { Attendee } from '../api/attendees';
+import { queries } from '../api/queries';
 import { EditIcon, GlobeIcon, SeatIcon, StarIcon, TrashIcon, UsersIcon } from '../components/Icons';
 import { notify } from '../lib/notify';
 
@@ -29,45 +30,26 @@ export function Attendees() {
   const navigate = useNavigate();
   const [q, setQ] = useState('');
   const [page, setPage] = useState(1);
-  const [result, setResult] = useState<Page<Attendee>>();
-  const [summary, setSummary] = useState<Summary>();
-  const [countries, setCountries] = useState<Record<string, string>>({});
-  const [loading, setLoading] = useState(true);
-  const [version, setVersion] = useState(0);
+  const cache = useQueryClient();
+  // Typing a new search gives the query another key: the one before is
+  // cancelled, with its request
+  const { data: result, isFetching: loading } = useQuery(queries.list(q, page));
+  const { data: summary } = useQuery(queries.summary());
+  const { data: countryList } = useQuery(queries.countries());
+  const countries = Object.fromEntries((countryList ?? []).map(({ value, label }) => [value, label]));
 
-  useEffect(() => {
-    const leaving = new AbortController();
+  const removal = useMutation({
+    mutationFn: (attendee: Attendee) => deleteAttendee(attendee.id),
+    onSuccess: (_response, attendee) => {
+      notify(`${attendee.name} was deleted`, 'success');
+      // The last row of a page is gone: the page before it
+      if (result?.items.length === 1 && page > 1) setPage(page - 1);
 
-    setLoading(true);
-    listAttendees(q, page, leaving.signal)
-      .then((found) => {
-        setResult(found);
-        setLoading(false);
-      })
-      .catch((error) => {
-        // Replaced by a newer search, or the page was left: nothing to show.
-        // Other failures were shown by the client already
-        if (!(isRequestError(error) && error.reason === 'abort')) setLoading(false);
-      });
-
-    return () => leaving.abort();
-  }, [q, page, version]);
-
-  // The figures follow what is deleted; the names of the countries come from the cache
-  useEffect(() => {
-    const leaving = new AbortController();
-
-    getSummary(leaving.signal).then(setSummary, () => undefined);
-
-    return () => leaving.abort();
-  }, [version]);
-
-  useEffect(() => {
-    listCountries().then(
-      (list) => setCountries(Object.fromEntries(list.map(({ value, label }) => [value, label]))),
-      () => undefined
-    );
-  }, []);
+      // The list and the figures are asked for again
+      return cache.invalidateQueries({ queryKey: queries.attendees });
+    }
+    // A failure was shown by the client already
+  });
 
   const remove = async (attendee: Attendee) => {
     const sure = await confirm({
@@ -77,17 +59,7 @@ export function Attendees() {
       color: 'error'
     });
 
-    if (!sure) return;
-
-    try {
-      await deleteAttendee(attendee.id);
-      notify(`${attendee.name} was deleted`, 'success');
-      // The last row of a page is gone: the page before it
-      if (result?.items.length === 1 && page > 1) setPage(page - 1);
-      setVersion((count) => count + 1);
-    } catch {
-      // The client showed the message
-    }
+    if (sure) removal.mutate(attendee);
   };
 
   const first = result && result.total ? (page - 1) * PAGE_SIZE + 1 : 0;
