@@ -1,0 +1,45 @@
+{
+  "name": "create-punica",
+  "version": "0.1.0",
+  "description": "Starts an application on Punica Form, Punica Request and Punica Components: npm create punica@latest my-app",
+  "keywords": [
+    "punica",
+    "create",
+    "starter",
+    "forms",
+    "http-client",
+    "web-components",
+    "react"
+  ],
+  "homepage": "https://github.com/punicalab/punica-starter",
+  "bugs": {
+    "url": "https://github.com/punicalab/punica-starter/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/punicalab/punica-starter.git",
+    "directory": "create"
+  },
+  "license": "MIT",
+  "author": "PunicaLab",
+  "type": "module",
+  "bin": {
+    "create-punica": "index.mjs"
+  },
+  "files": [
+    "index.mjs",
+    "template"
+  ],
+  "scripts": {
+    "build": "node build.mjs",
+    "prepack": "node build.mjs",
+    "test": "node build.mjs && node --test test.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

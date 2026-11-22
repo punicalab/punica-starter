@@ -9,10 +9,16 @@ A small application on three libraries that are made to be used together:
 It signs a user in, lists attendees with a search, and creates, edits and
 deletes them, against a stand-in API that runs beside it.
 
+Start an application of your own from it:
+
 ```bash
+npm create punica@latest my-app
+cd my-app
 npm install
 npm run dev        # the API on :4500 and the application on http://localhost:5173
 ```
+
+Or clone this repository and run the same two commands.
 
 Sign in as `admin@example.com` / `secret123`.
 
@@ -34,6 +40,7 @@ Sign in as `admin@example.com` / `secret123`.
 | [`src/lib/formRequest.ts`](./src/lib/formRequest.ts) | The bridge: what the server refuses is shown on the fields it is about |
 | [`src/pages`](./src/pages) | The three pages |
 | [`server/index.mjs`](./server/index.mjs) | The stand-in API |
+| [`create/`](./create) | `create-punica`, the package behind `npm create punica`: it copies this application into a new folder |
 
 ## Requests and their state
 

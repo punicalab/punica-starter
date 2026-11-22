@@ -1,0 +1,53 @@
+# Publishes create-punica, the package behind `npm create punica`, when its
+# version (create/package.json) is not on npm yet. Started by hand, or by a
+# change of that version on main.
+name: Publish create-punica
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [create/package.json]
+
+concurrency:
+  group: publish-create
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  id-token: write # npm provenance
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: create
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          registry-url: https://registry.npmjs.org
+
+      # The template is the application as main holds it
+      - name: Test
+        run: npm test
+        env:
+          CREATE_PUNICA_FULL: 1
+
+      - name: Publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          if [ -z "$NODE_AUTH_TOKEN" ]; then
+            echo "::warning::The NPM_TOKEN secret is not set: nothing is published."
+            exit 0
+          fi
+          version=$(node -p "require('./package.json').version")
+          if npm view "create-punica@$version" version >/dev/null 2>&1; then
+            echo "create-punica@$version is on npm already"
+          else
+            npm publish
+          fi
