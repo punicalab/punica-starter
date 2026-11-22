@@ -70,8 +70,5 @@ it writes instead of guessing.
   `ElementInternals`. Screen readers read them; axe and Playwright's
   `getByRole` do not yet. The pages therefore use a native `<h1>`, and the
   tests find a `punica-table-row` by its tag.
-- `toast` and `confirm` of `@punica/components` are declared in
-  [`src/punica-components.d.ts`](./src/punica-components.d.ts): version 2.1
-  exports them without types.
 - The form classes use decorators: `"experimentalDecorators": true` in
   `tsconfig.json`.
