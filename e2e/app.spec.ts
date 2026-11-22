@@ -45,8 +45,12 @@ test.describe('signing in', () => {
 
     await field(page, 'Password').fill('secret123');
     await page.getByRole('button', { name: 'Sign in' }).click();
-    await expect(page.locator(rows)).toHaveCount(10);
+    await expect(page.locator(rows)).toHaveCount(8);
     await expect(page.getByTestId('total')).toHaveText('25 attendees');
+    await expect(page.getByTestId('range')).toHaveText('Showing 1–8 of 25');
+    // The figures above the list
+    await expect(page.getByTestId('stat-attendees')).toHaveText('25');
+    await expect(page.getByTestId('stat-vip-tickets')).toHaveText('7');
   });
 
   test('signing out ends the session', async ({ page }) => {
@@ -66,11 +70,12 @@ test.describe('the list', () => {
 
     await page.request.post(`${API}/test/expire-token`);
     await page.locator('punica-pagination').getByRole('button', { name: 'Page 2' }).click();
-    await expect(page.locator(rows).first()).toContainText('Guest 08');
+    await expect(page.locator(rows).first()).toContainText('Barbara Liskov');
+    await expect(page.getByTestId('range')).toHaveText('Showing 9–16 of 25');
     expect(requests).toEqual([
-      'GET /attendees?page=2&pageSize=10 401',
+      'GET /attendees?page=2&pageSize=8 401',
       'POST /auth/refresh 200',
-      'GET /attendees?page=2&pageSize=10 200'
+      'GET /attendees?page=2&pageSize=8 200'
     ]);
     await expect(page.locator('punica-toast')).toHaveCount(0);
   });
@@ -87,8 +92,11 @@ test.describe('the list', () => {
     });
 
     await page.locator('punica-input[type="search"] input').pressSequentially('gra', { delay: 30 });
-    await expect(page.getByTestId('total')).toHaveText('1 attendees');
-    await expect(page.locator(rows)).toHaveText(['Grace Hopper' + 'grace@example.com' + 'Standard' + 'Delete']);
+    await expect(page.getByTestId('total')).toHaveText('1 attendee');
+    await expect(page.locator(rows)).toHaveCount(1);
+    await expect(page.locator(rows)).toContainText(['Grace Hopper']);
+    await expect(page.locator(rows)).toContainText(['grace@example.com']);
+    await expect(page.locator(rows)).toContainText(['United States']);
     // The two it overtook never got their answer; how the rest is timed is
     // the machine's business
     expect(cancelled).toEqual(expect.arrayContaining(['g', 'gr']));
@@ -115,6 +123,8 @@ test.describe('the list', () => {
     await expect(page.locator('punica-toast')).toContainText('Alan Turing was deleted');
     await expect(row).toHaveCount(0);
     await expect(page.getByTestId('total')).toHaveText('24 attendees');
+    // The figures follow
+    await expect(page.getByTestId('stat-attendees')).toHaveText('24');
   });
 
   test('a session that cannot be continued ends at the sign-in page', async ({ page }) => {
@@ -172,18 +182,18 @@ test.describe('the form of an attendee', () => {
   test('a rule about two fields comes from the schema', async ({ page }) => {
     await page.locator('punica-radio', { hasText: 'VIP' }).click();
     await page.getByRole('button', { name: 'Create attendee' }).click();
-    await expect(page.getByText('A VIP ticket needs a date of birth')).toBeVisible();
+    await expect(page.getByText('A VIP ticket needs a date of birth', { exact: true })).toBeVisible();
 
     await page.locator('punica-radio', { hasText: 'Standard' }).click();
     await page.getByRole('button', { name: 'Create attendee' }).click();
-    await expect(page.getByText('A VIP ticket needs a date of birth')).toHaveCount(0);
+    await expect(page.getByText('A VIP ticket needs a date of birth', { exact: true })).toHaveCount(0);
   });
 
   test('an attendee is created with tickets and a badge, and is in the list', async ({ page }) => {
     const requests = watchRequests(page);
 
     await field(page, 'Name').fill('Katherine Johnson');
-    await field(page, 'Email').fill('katherine@example.com');
+    await field(page, 'Email').fill('k.johnson@example.com');
     await choose(page, 'Country', 'United States');
     await page.locator('punica-radio', { hasText: 'VIP' }).click();
     await page.locator('punica-date-picker input').fill('08/26/1988');
@@ -195,6 +205,9 @@ test.describe('the form of an attendee', () => {
     await page.locator('punica-field[label="Session"]').nth(1).locator('punica-select').click();
     await page.locator('punica-field[label="Session"]').nth(1).locator('punica-option', { hasText: 'Workshop' }).click();
     await page.locator('punica-field[label="Quantity"]').nth(1).locator('input').fill('3');
+    // Beside the form, what it holds so far
+    await expect(page.getByTestId('summary-name')).toHaveText('Katherine Johnson');
+    await expect(page.getByTestId('summary-seats')).toHaveText('4');
 
     await page.locator('punica-file-input input[type="file"]').setInputFiles({
       name: 'badge.png',
@@ -216,7 +229,7 @@ test.describe('the form of an attendee', () => {
     ]);
 
     // What was saved comes back into the form
-    await page.getByRole('link', { name: 'Katherine Johnson' }).click();
+    await page.getByRole('link', { name: 'Katherine Johnson' }).first().click();
     await expect(field(page, 'Name')).toHaveValue('Katherine Johnson');
     await expect(page.locator('punica-field[label="Session"]')).toHaveCount(2);
     await expect(page.locator('punica-field[label="Quantity"]').nth(1).locator('input')).toHaveValue('3');
@@ -289,7 +302,7 @@ test.describe('editing', () => {
 
     const requests = watchRequests(page);
 
-    await page.getByRole('link', { name: 'Grace Hopper' }).click();
+    await page.getByRole('button', { name: 'Edit Grace Hopper' }).click();
     await expect(heading(page, 'Grace Hopper')).toBeVisible();
     await expect(field(page, 'Email')).toHaveValue('grace@example.com');
     await expect(page.locator('punica-field[label="Quantity"] input')).toHaveValue('2');
@@ -313,6 +326,8 @@ test.describe('editing', () => {
     await signIn(page);
     await page.goto('/attendees/999');
     await expect(page.getByText('This attendee is not here')).toBeVisible();
+    await page.getByRole('link', { name: 'Back to the list' }).click();
+    await expect(heading(page, 'Attendees')).toBeVisible();
     // The client told the user as well; that message is the server's
     await expect(page.locator('punica-toast')).toContainText('There is no such attendee');
   });

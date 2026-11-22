@@ -43,7 +43,7 @@ export const signIn = async (page: Page) => {
   await page.getByRole('button', { name: 'Sign in' }).click();
   await expect(heading(page, 'Attendees')).toBeVisible();
   // The list has arrived: what a test watches from here on is its own
-  await expect(page.getByTestId('total')).toHaveText(/\d+ attendees/);
+  await expect(page.getByTestId('total')).toHaveText(/\d+ attendees?/);
 };
 
 export const reset = (page: Page) => page.request.post(`${API}/test/reset`);

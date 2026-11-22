@@ -3,19 +3,44 @@
 import http from 'node:http';
 import { pathToFileURL } from 'node:url';
 
+const PEOPLE = [
+  ['Katherine Johnson', 'US', 'vip', 2],
+  ['Hedy Lamarr', 'US', 'standard', 1],
+  ['Linus Berg', 'GB', 'standard', 1],
+  ['Margaret Hamilton', 'US', 'vip', 1],
+  ['Niklas Wirth', 'ME', 'standard', 3],
+  ['Barbara Liskov', 'US', 'standard', 1],
+  ['Cahit Arf', 'TR', 'vip', 2],
+  ['Dennis Ritchie', 'US', 'standard', 1],
+  ['Edsger Dijkstra', 'GB', 'standard', 1],
+  ['Frances Allen', 'US', 'standard', 2],
+  ['Guido Rossum', 'GB', 'standard', 1],
+  ['Ivan Sutherland', 'US', 'vip', 1],
+  ['Jean Bartik', 'US', 'standard', 1],
+  ['Ken Thompson', 'US', 'standard', 4],
+  ['Leslie Lamport', 'GB', 'standard', 1],
+  ['Marija Petrovic', 'ME', 'standard', 2],
+  ['Niko Vukovic', 'ME', 'vip', 1],
+  ['Ozan Demir', 'TR', 'standard', 1],
+  ['Radia Perlman', 'US', 'standard', 1],
+  ['Selin Kaya', 'TR', 'standard', 2],
+  ['Tim Berners', 'GB', 'vip', 1],
+  ['Zeynep Arslan', 'TR', 'standard', 1]
+];
+
 const seed = () => [
   { id: 1, name: 'Ada Lovelace', email: 'ada@example.com', country: 'GB', birthDate: '1990-12-10', ticketType: 'vip', interests: ['talks'], tickets: [{ session: 'Opening', quantity: 1 }] },
   { id: 2, name: 'Grace Hopper', email: 'grace@example.com', country: 'US', birthDate: '1986-12-09', ticketType: 'standard', interests: ['workshops', 'talks'], tickets: [{ session: 'Compilers', quantity: 2 }] },
   { id: 3, name: 'Alan Turing', email: 'alan@example.com', country: 'GB', birthDate: '', ticketType: 'standard', interests: [], tickets: [{ session: 'Opening', quantity: 1 }] },
-  ...Array.from({ length: 22 }, (_, index) => ({
+  ...PEOPLE.map(([name, country, ticketType, quantity], index) => ({
     id: index + 4,
-    name: `Guest ${String(index + 1).padStart(2, '0')}`,
-    email: `guest${index + 1}@example.com`,
-    country: index % 2 ? 'TR' : 'ME',
-    birthDate: '',
-    ticketType: 'standard',
-    interests: [],
-    tickets: [{ session: 'Opening', quantity: 1 }]
+    name,
+    email: `${name.toLowerCase().replace(/[^a-z]+/g, '.')}@example.com`,
+    country,
+    birthDate: ticketType === 'vip' ? '1985-04-12' : '',
+    ticketType,
+    interests: index % 3 ? ['talks'] : ['workshops', 'networking'],
+    tickets: [{ session: index % 2 ? 'Workshop' : 'Opening', quantity }]
   }))
 ];
 
@@ -123,6 +148,18 @@ export const startApi = async (port = 0) => {
           () => json(response, 200, { available: !state.attendees.some((item) => item.email === email && item.id !== except) }),
           80
         );
+      }
+
+      if (route === 'GET /attendees/summary') {
+        return json(response, 200, {
+          total: state.attendees.length,
+          vip: state.attendees.filter((item) => item.ticketType === 'vip').length,
+          seats: state.attendees.reduce(
+            (sum, item) => sum + item.tickets.reduce((seats, ticket) => seats + Number(ticket.quantity ?? 0), 0),
+            0
+          ),
+          countries: new Set(state.attendees.map((item) => item.country)).size
+        });
       }
 
       if (route === 'GET /attendees') {

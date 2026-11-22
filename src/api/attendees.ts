@@ -28,10 +28,20 @@ export interface Country {
   label: string;
 }
 
-export const PAGE_SIZE = 10;
+export interface Summary {
+  total: number;
+  vip: number;
+  seats: number;
+  countries: number;
+}
+
+export const PAGE_SIZE = 8;
 
 export const listAttendees = async (q: string, page: number, signal?: AbortSignal) =>
   (await api.get<Page<Attendee>>('attendees', { query: { q: q || undefined, page, pageSize: PAGE_SIZE }, signal })).data;
+
+export const getSummary = async (signal?: AbortSignal) =>
+  (await api.get<Summary>('attendees/summary', { signal, silent: true })).data;
 
 export const getAttendee = async (id: number, signal?: AbortSignal) =>
   (await api.get<Attendee>(`attendees/${id}`, { signal })).data;

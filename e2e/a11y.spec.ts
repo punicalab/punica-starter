@@ -29,7 +29,7 @@ for (const scheme of ['light', 'dark'] as const) {
     test('the list', async ({ page }) => {
       await reset(page);
       await signIn(page);
-      await expect(page.locator('punica-table-body punica-table-row')).toHaveCount(10);
+      await expect(page.locator('punica-table-body punica-table-row')).toHaveCount(8);
       expect(await violations(page)).toEqual([]);
     });
 
