@@ -76,16 +76,20 @@ brought no response, are shown above the fields.
 />
 ```
 
-The form lists the `ServerErrors` service
-(`@FormKit({ services: [ServerErrors] })`); the request is made with
-`silent: true`, an option of this application that keeps the client from
-showing its own message.
+`submitTo` is a few lines around the `SetErrors` service of Punica Form,
+which every `@FormKit` form has; the request is made with `silent: true`, an
+option of this application that keeps the client from showing its own
+message.
 
 ## Working with an AI assistant
 
 [`.mcp.json`](./.mcp.json) sets up the MCP servers of the three libraries.
 An assistant that opens this folder looks their APIs up and checks the code
 it writes instead of guessing.
+
+[`AGENTS.md`](./AGENTS.md) is the short version of how the three are used
+together: one client, the query layer, a form, what the server refuses,
+the pages and the tests.
 
 ## Good to know
 

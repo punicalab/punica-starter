@@ -63,6 +63,13 @@ const problemsOf = (state, sent, id) => {
   else if (state.attendees.some((one) => one.email === sent.email && one.id !== id)) add('email', 'This email is already registered');
   if (!Array.isArray(sent.tickets) || sent.tickets.length === 0) add('tickets', 'Add at least one ticket');
 
+  // A rule about one row of the tickets: named by its index
+  (sent.tickets ?? []).forEach((ticket, index) => {
+    if (ticket.session === 'Workshop' && Number(ticket.quantity) > 5) {
+      add(`tickets.${index}.quantity`, 'The workshop has 5 seats');
+    }
+  });
+
   const seats = (sent.tickets ?? []).reduce((sum, ticket) => sum + Number(ticket.quantity ?? 0), 0);
 
   // A rule that belongs to no field of the form
