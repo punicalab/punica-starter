@@ -14,7 +14,6 @@ import { z } from 'zod';
 import { isEmailAvailable } from '../api/attendees';
 import type { Attendee } from '../api/attendees';
 import { queries, queryClient } from '../api/queries';
-import { ServerErrors } from '../lib/formRequest';
 
 /** A row of the tickets. */
 export class TicketForm {
@@ -45,7 +44,7 @@ const Rules = z
  */
 export const attendeeForm = (attendee?: Attendee) => {
   @Schema(Rules)
-  @FormKit({ columns: 2, services: [SchemaValidation, ServerErrors] })
+  @FormKit({ columns: 2, services: [SchemaValidation] })
   class AttendeeForm {
     @TextField({ label: 'Name', required: true, minLength: 2 })
     name = attendee?.name ?? '';

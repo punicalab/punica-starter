@@ -297,6 +297,32 @@ test.describe('the form of an attendee', () => {
     await expect(page.locator('punica-toast')).toContainText('Second Ada was saved');
   });
 
+  test('what the server refuses about one row is shown in that row', async ({ page }) => {
+    await field(page, 'Name').fill('Workshop Fan');
+    await field(page, 'Email').fill('fan@example.com');
+    await choose(page, 'Country', 'Montenegro');
+    await page.getByRole('button', { name: 'Add ticket' }).click();
+
+    const second = {
+      session: page.locator('punica-field[label="Session"]').nth(1),
+      quantity: page.locator('punica-field[label="Quantity"]').nth(1)
+    };
+
+    await second.session.locator('punica-select').click();
+    await second.session.locator('punica-option', { hasText: 'Workshop' }).click();
+    await second.quantity.locator('input').fill('6');
+    await page.getByRole('button', { name: 'Create attendee' }).click();
+
+    // On the quantity of the second ticket, not on the first and not above the form
+    await expect(second.quantity).toContainText('The workshop has 5 seats');
+    await expect(page.locator('punica-field[label="Quantity"]').first()).not.toContainText('The workshop has 5 seats');
+    await expect(page.getByRole('alert').first()).toHaveText('Correct the marked fields and try again.');
+
+    await second.quantity.locator('input').fill('5');
+    await page.getByRole('button', { name: 'Create attendee' }).click();
+    await expect(page.locator('punica-toast')).toContainText('Workshop Fan was saved');
+  });
+
   test('a server that cannot be reached is told above the fields, and the form stays', async ({ page }) => {
     await field(page, 'Name').fill('Nobody Home');
     await field(page, 'Email').fill('nobody@example.com');

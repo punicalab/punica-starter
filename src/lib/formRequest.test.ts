@@ -4,9 +4,9 @@ import { Submit } from '@punica/form-service';
 import { createClient } from '@punica/request';
 import type { Adapter } from '@punica/request';
 import { describe, expect, it } from 'vitest';
-import { ServerErrors, submitTo, SubmitRejected } from './formRequest';
+import { submitTo, SubmitRejected } from './formRequest';
 
-@FormKit({ services: [ServerErrors] })
+@FormKit()
 class PersonForm {
   @TextField({ label: 'Name' })
   name = 'Ada';
