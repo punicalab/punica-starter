@@ -1,4 +1,5 @@
 import { api, session } from './client';
+import { queryClient } from './queries';
 
 export const signIn = async (email: string, password: string) => {
   // The form shows what is wrong: no message from the client
@@ -12,4 +13,8 @@ export const signIn = async (email: string, password: string) => {
   return data;
 };
 
-export const signOut = () => session.end();
+/** Ends the session; what was loaded for this user is forgotten. */
+export const signOut = () => {
+  session.end();
+  queryClient.clear();
+};

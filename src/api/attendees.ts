@@ -63,9 +63,7 @@ export const uploadBadge = (id: number, file: File) => {
   return api.post<{ name: string }>(`attendees/${id}/badge`, { body });
 };
 
-/** The countries, asked for once an hour however many forms show them. */
-export const listCountries = async () =>
-  (await api.get<Country[]>('countries', { cache: { ttl: 60 * 60 * 1000 } })).data;
+export const listCountries = async (signal?: AbortSignal) => (await api.get<Country[]>('countries', { signal })).data;
 
 export const isEmailAvailable = async (email: string, except: number | undefined, signal?: AbortSignal) =>
   (

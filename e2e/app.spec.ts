@@ -60,6 +60,22 @@ test.describe('signing in', () => {
     await page.goto('/');
     await expect(page).toHaveURL(/\/login$/);
   });
+
+  test('what was loaded for one session is not shown to the next', async ({ page }) => {
+    await signIn(page);
+    await page.getByRole('button', { name: 'Sign out' }).click();
+    await expect(page).toHaveURL(/\/login$/);
+
+    // The list is asked for again, not taken from what the last session saw
+    const requests = watchRequests(page);
+
+    await field(page, 'Email').fill('admin@example.com');
+    await field(page, 'Password').fill('secret123');
+    await page.getByRole('button', { name: 'Sign in' }).click();
+    await expect(page.getByTestId('total')).toHaveText('25 attendees');
+    expect(requests).toContain('GET /attendees?page=1&pageSize=8 200');
+    expect(requests).toContain('GET /attendees/summary 200');
+  });
 });
 
 test.describe('the list', () => {
@@ -103,6 +119,21 @@ test.describe('the list', () => {
     expect(finished).not.toContain('g');
     expect(finished).not.toContain('gr');
     expect(finished.at(-1)).toBe('gra');
+  });
+
+  test('a page that was shown is there at once when the user comes back to it', async ({ page }) => {
+    const pagination = page.locator('punica-pagination');
+
+    await pagination.getByRole('button', { name: 'Page 2' }).click();
+    await expect(page.getByTestId('range')).toHaveText('Showing 9–16 of 25');
+
+    const requests = watchRequests(page);
+
+    await pagination.getByRole('button', { name: 'Page 1' }).click();
+    await expect(page.locator(rows).first()).toContainText('Ada Lovelace');
+    await expect(page.getByTestId('range')).toHaveText('Showing 1–8 of 25');
+    // Still fresh: nothing was asked for
+    expect(requests).toEqual([]);
   });
 
   test('a search that finds nothing says so', async ({ page }) => {
