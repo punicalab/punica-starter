@@ -1,0 +1,43 @@
+{
+  "name": "punica-starter",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "A small application on Punica Form, Punica Request and Punica Components: sign in, a list, and a form that is created and edited.",
+  "scripts": {
+    "dev": "concurrently -k -n api,web \"node server/index.mjs\" \"vite\"",
+    "api": "node server/index.mjs",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --port 4173 --strictPort",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "e2e": "playwright test"
+  },
+  "dependencies": {
+    "@punica/components": "^2.1.0",
+    "@punica/form": "^2.2.0-next.1",
+    "@punica/form-kit": "^0.3.0-next.1",
+    "@punica/form-react": "^0.2.0-next.1",
+    "@punica/form-schema": "^0.1.0-next.0",
+    "@punica/form-service": "^2.2.0-next.1",
+    "@punica/request": "^3.0.0",
+    "@punica/request-fetch": "^3.0.0",
+    "@punica/request-middleware": "^3.0.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-router": "^8.5.2",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.65.1",
+    "@types/node": "^26.6.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.3.0",
+    "axe-core": "^4.14.1",
+    "concurrently": "^10.0.7",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.8",
+    "vitest": "^5.1.1"
+  }
+}

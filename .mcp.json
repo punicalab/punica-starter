@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "punica-form": { "command": "npx", "args": ["-y", "@punica/form-mcp"] },
+    "punica-request": { "command": "npx", "args": ["-y", "@punica/request-mcp"] },
+    "punica-components": { "command": "npx", "args": ["-y", "@punica/components-mcp"] }
+  }
+}
