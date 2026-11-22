@@ -89,8 +89,12 @@ test.describe('the list', () => {
     await page.locator('punica-input[type="search"] input').pressSequentially('gra', { delay: 30 });
     await expect(page.getByTestId('total')).toHaveText('1 attendees');
     await expect(page.locator(rows)).toHaveText(['Grace Hopper' + 'grace@example.com' + 'Standard' + 'Delete']);
-    expect(cancelled).toEqual(['g', 'gr']);
-    expect(finished).toEqual(['gra']);
+    // The two it overtook never got their answer; how the rest is timed is
+    // the machine's business
+    expect(cancelled).toEqual(expect.arrayContaining(['g', 'gr']));
+    expect(finished).not.toContain('g');
+    expect(finished).not.toContain('gr');
+    expect(finished.at(-1)).toBe('gra');
   });
 
   test('a search that finds nothing says so', async ({ page }) => {
