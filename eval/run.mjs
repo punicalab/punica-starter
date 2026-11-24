@@ -8,6 +8,7 @@
 //   node run.mjs --check <dir> --task form     scores a workspace that exists; no model is called
 //
 // Options: --models a,b  --effort low|medium|high|xhigh  --reps n  --budget dollars
+//   --local http://127.0.0.1:11434   a local server of the Messages API (Ollama): free, no effort, no cache, no count
 //
 // Conditions (each starts from the same empty scaffold of its stack):
 //   mainstream     React Hook Form + Zod, axios, TanStack Query, MUI; nothing to read: models know them
@@ -64,7 +65,10 @@ const PRICE = {
 // These models can decline a request; the server then answers on a fallback, and the run records which model answered.
 const WITH_FALLBACK = ['claude-opus-5-5', 'claude-sonnet-5-5', 'claude-fable-5-2'];
 
+// A local server that speaks the Messages API (Ollama, llama.cpp): its models cost nothing and know no Anthropic extras
+const LOCAL = flag('--local');
 const MODELS = (flag('--models') || 'claude-opus-5-5').split(',');
+if (LOCAL) for (const model of MODELS) PRICE[model] ??= [0, 0, 0];
 const NAMES = (flag('--conditions') || Object.keys(CONDITIONS).join(',')).split(',');
 const ONLY = flag('--only')?.split(',');
 const TASKS = ONLY ? tasks.filter((task) => ONLY.includes(task.id)) : tasks;
@@ -332,13 +336,17 @@ async function converse(anthropic, { model, condition, task, dir, servers, recor
       .stream({
         model,
         max_tokens: MAX_TOKENS,
-        output_config: { effort: EFFORT },
-        // The prompt, the tools and the conversation so far are read from the cache on the next turn
-        cache_control: { type: 'ephemeral' },
+        ...(LOCAL
+          ? {}
+          : {
+              output_config: { effort: EFFORT },
+              // The prompt, the tools and the conversation so far are read from the cache on the next turn
+              cache_control: { type: 'ephemeral' }
+            }),
         system,
         tools,
         messages,
-        ...(WITH_FALLBACK.includes(model) ? { betas: ['server-side-fallback-2026-07-01'], fallbacks: 'default' } : {})
+        ...(!LOCAL && WITH_FALLBACK.includes(model) ? { betas: ['server-side-fallback-2026-07-01'], fallbacks: 'default' } : {})
       })
       .finalMessage();
 
@@ -596,7 +604,7 @@ if (flag('--check')) {
 // A repetition of everything before the next one: a run that stops early still compares like with like
 const runs = Array.from({ length: REPS }, (_, rep) => MODELS.flatMap((model) => TASKS.flatMap((task) => NAMES.map((condition) => ({ model, task, condition, rep: rep + 1 }))))).flat();
 const expected = runs.reduce((sum, { model, condition }) => sum + estimate(model, condition), 0);
-const BUDGET = Number(flag('--budget') || (expected * 2).toFixed(2));
+const BUDGET = LOCAL ? Infinity : Number(flag('--budget') || (expected * 2).toFixed(2));
 
 if (!(BUDGET > 0)) throw new Error('--budget must be an amount in dollars');
 
@@ -617,7 +625,7 @@ for (const stack of new Set(NAMES.map((name) => CONDITIONS[name].stack))) {
   }
 }
 
-const anthropic = new Anthropic();
+const anthropic = LOCAL ? new Anthropic({ baseURL: LOCAL, apiKey: 'local' }) : new Anthropic();
 const servers = NAMES.some((name) => CONDITIONS[name].stack === 'punica') ? await startServers() : undefined;
 const serversOf = (condition) => (CONDITIONS[condition].stack === 'punica' ? servers : undefined);
 const stamp = new Date().toISOString().replace(/[:.]/g, '-');
@@ -639,7 +647,7 @@ const close = async () => {
 // Before anything is paid for: the prompt and the tools of every condition
 // are counted, which costs nothing and refuses what a conversation would refuse
 try {
-  for (const model of MODELS) {
+  for (const model of LOCAL ? [] : MODELS) {
     for (const condition of NAMES) {
       const mine = serversOf(condition);
       const counted = await anthropic.beta.messages.countTokens({
