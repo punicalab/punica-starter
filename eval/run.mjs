@@ -601,6 +601,33 @@ if (flag('--check')) {
   process.exit(result.pass ? 0 : 1);
 }
 
+// For an agent of an editor (Claude Code) as the model: the workspace of each task and condition, and the
+// prompt of the run in BRIEF.md beside it; the editor's own MCP servers stand in for the tools. No model is called.
+if (flag('--brief')) {
+  const root = path.resolve(flag('--brief'));
+  const servers = NAMES.some((name) => CONDITIONS[name].stack === 'punica') ? await startServers() : undefined;
+  const MCP = { form: 'mcp__punica-form__', request: 'mcp__punica-request__', components: 'mcp__punica__' };
+
+  for (const task of TASKS) {
+    for (const condition of NAMES) {
+      const dir = path.join(root, `${task.id}-${condition}`);
+      const mine = CONDITIONS[condition].stack === 'punica' ? servers : undefined;
+      let system = (await systemOf(condition, mine)).replace(
+        'The tools named form_*, request_* and components_*',
+        `The MCP tools ${Object.values(MCP).map((prefix) => `${prefix}*`).join(', ')}`
+      );
+
+      if (mine) system += `\n\nOf those tools, leave ${HIDDEN.join(', ')} alone${condition === 'punica-guides' ? ', and do not pass `brief`' : ''}.`;
+      await workspace(condition, dir);
+      await writeFile(path.join(root, `${task.id}-${condition}.BRIEF.md`), `${system}\n\n# The task\n\n${task.prompt}\n`);
+      console.log(dir);
+    }
+  }
+
+  for (const server of Object.values(servers ?? {})) await server.client.close();
+  process.exit(0);
+}
+
 // A repetition of everything before the next one: a run that stops early still compares like with like
 const runs = Array.from({ length: REPS }, (_, rep) => MODELS.flatMap((model) => TASKS.flatMap((task) => NAMES.map((condition) => ({ model, task, condition, rep: rep + 1 }))))).flat();
 const expected = runs.reduce((sum, { model, condition }) => sum + estimate(model, condition), 0);
