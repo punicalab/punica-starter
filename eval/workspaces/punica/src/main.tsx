@@ -3,6 +3,8 @@ import { createRoot } from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter } from 'react-router';
 import '@punica/components';
+// The punica-* elements in JSX, typed: as src/App.tsx of the starter does
+import type {} from '@punica/components/react';
 import '@punica/components/tokens.css';
 import { App } from './App';
 

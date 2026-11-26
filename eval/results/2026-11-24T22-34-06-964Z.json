@@ -1,0 +1,1188 @@
+{
+  "models": [
+    "qwen3.5-9b-128k"
+  ],
+  "conditions": [
+    "mainstream",
+    "punica-guides",
+    "punica-agents"
+  ],
+  "effort": "medium",
+  "reps": 3,
+  "versions": {
+    "@punica/form-mcp": "0.6.1",
+    "@punica/request-mcp": "0.2.0",
+    "@punica/components-mcp": "0.2.0"
+  },
+  "spent": 0,
+  "results": [
+    {
+      "model": "qwen3.5-9b-128k",
+      "task": "form",
+      "condition": "mainstream",
+      "rep": 1,
+      "dir": ".runs/2026-11-24T22-34-06-964Z/qwen3.5-9b-128k-form-mainstream-1",
+      "stop": "end_turn",
+      "turns": 7,
+      "usage": {
+        "input": 13901,
+        "output": 1295,
+        "cacheRead": 0,
+        "cacheWrite": 0
+      },
+      "calls": {
+        "list_files": 3,
+        "read_file": 6
+      },
+      "answeredBy": [
+        "qwen3.5-9b-128k"
+      ],
+      "cost": 0,
+      "seconds": 41.737,
+      "score": {
+        "typecheck": true,
+        "typeErrors": 0,
+        "build": true,
+        "checks": [
+          {
+            "name": "nothing is sent while the form is invalid",
+            "pass": false,
+            "why": "locator.waitFor: Timeout 8000ms exceeded."
+          },
+          {
+            "name": "the server's message for a field is shown, and a corrected form is saved",
+            "pass": false,
+            "why": "locator.waitFor: Timeout 8000ms exceeded."
+          },
+          {
+            "name": "a message about one row and one about no field are shown, and go away",
+            "pass": false,
+            "why": "locator.waitFor: Timeout 8000ms exceeded."
+          }
+        ],
+        "validatorErrors": 0,
+        "findings": [],
+        "pass": false
+      }
+    },
+    {
+      "model": "qwen3.5-9b-128k",
+      "task": "form",
+      "condition": "punica-guides",
+      "rep": 1,
+      "dir": ".runs/2026-11-24T22-34-06-964Z/qwen3.5-9b-128k-form-punica-guides-1",
+      "stop": "turn-limit",
+      "turns": 40,
+      "usage": {
+        "input": 1295621,
+        "output": 29449,
+        "cacheRead": 0,
+        "cacheWrite": 0
+      },
+      "calls": {
+        "list_files": 5,
+        "read_file": 7,
+        "write_file": 14,
+        "form_get_api": 12,
+        "typecheck": 3,
+        "components_search_components": 2,
+        "form_search_api": 1,
+        "components_get_component": 2
+      },
+      "answeredBy": [
+        "qwen3.5-9b-128k"
+      ],
+      "cost": 0,
+      "seconds": 1137.574,
+      "score": {
+        "typecheck": false,
+        "typeErrors": 33,
+        "build": false,
+        "buildOutput": "[38;5;249mi\u001b[0m\u001b[38;5;249mt\u001b[0m\u001b[38;5;249m\"\u001b[0m\u001b[38;5;249m;\u001b[0m\n \u001b[38;5;240m  │\u001b[0m                                                         ───┬───  \n \u001b[38;5;240m  │\u001b[0m                                                            ╰───── Missing export\n\u001b[38;5;246m───╯\u001b[0m\n\n    at aggregateBindingErrorsIntoJsError (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/rolldown/dist/shared/error-CLo6EJKG.mjs:50:18)\n    at unwrapBindingResult (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/rolldown/dist/shared/error-CLo6EJKG.mjs:20:128)\n    at #build (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/rolldown/dist/shared/rolldown-AohEFLrh.mjs:146:34)\n    at async buildEnvironment (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/vite/dist/node/chunks/node.js:34787:66)\n    at async Object.build (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/vite/dist/node/chunks/node.js:35208:19)\n    at async Object.buildApp (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/vite/dist/node/chunks/node.js:35205:153)\n    at async CAC.<anonymous> (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/vite/dist/node/cli.js:789:3) {\n  errors: [Getter/Setter]\n}",
+        "checks": [
+          {
+            "name": "nothing is sent while the form is invalid",
+            "pass": false,
+            "why": "the application does not build"
+          },
+          {
+            "name": "the server's message for a field is shown, and a corrected form is saved",
+            "pass": false,
+            "why": "the application does not build"
+          },
+          {
+            "name": "a message about one row and one about no field are shown, and go away",
+            "pass": false,
+            "why": "the application does not build"
+          }
+        ],
+        "validatorErrors": 2,
+        "findings": [
+          {
+            "library": "form",
+            "file": "src/pages/NewAttendee.tsx",
+            "errors": 2,
+            "report": "2 problems:\nline 2 unknown-export: @punica/form-kit does not export Services. [fix: import it from \"@punica/form\"]\nline 2 unknown-export: @punica/form-kit does not export formKit. [fix: it is not part of Punica Form: decorators such as Title or FormItemInputText, readers and form item types belong to your own form system]"
+          }
+        ],
+        "pass": false
+      }
+    },
+    {
+      "model": "qwen3.5-9b-128k",
+      "task": "form",
+      "condition": "punica-agents",
+      "rep": 1,
+      "dir": ".runs/2026-11-24T22-34-06-964Z/qwen3.5-9b-128k-form-punica-agents-1",
+      "stop": "turn-limit",
+      "turns": 40,
+      "usage": {
+        "input": 749716,
+        "output": 16503,
+        "cacheRead": 0,
+        "cacheWrite": 0
+      },
+      "calls": {
+        "list_files": 6,
+        "read_file": 8,
+        "form_search_api": 2,
+        "request_search_api": 1,
+        "form_get_api": 15,
+        "request_get_api": 2,
+        "write_file": 11,
+        "components_search_components": 2,
+        "typecheck": 1
+      },
+      "answeredBy": [
+        "qwen3.5-9b-128k"
+      ],
+      "cost": 0,
+      "seconds": 587.145,
+      "score": {
+        "typecheck": false,
+        "typeErrors": 24,
+        "build": true,
+        "checks": [
+          {
+            "name": "nothing is sent while the form is invalid",
+            "pass": false,
+            "why": "locator.waitFor: Timeout 8000ms exceeded."
+          },
+          {
+            "name": "the server's message for a field is shown, and a corrected form is saved",
+            "pass": false,
+            "why": "locator.waitFor: Timeout 8000ms exceeded."
+          },
+          {
+            "name": "a message about one row and one about no field are shown, and go away",
+            "pass": false,
+            "why": "locator.waitFor: Timeout 8000ms exceeded."
+          }
+        ],
+        "validatorErrors": 0,
+        "findings": [],
+        "pass": false
+      }
+    },
+    {
+      "model": "qwen3.5-9b-128k",
+      "task": "list",
+      "condition": "mainstream",
+      "rep": 1,
+      "dir": ".runs/2026-11-24T22-34-06-964Z/qwen3.5-9b-128k-list-mainstream-1",
+      "stop": "end_turn",
+      "turns": 29,
+      "usage": {
+        "input": 295250,
+        "output": 14534,
+        "cacheRead": 0,
+        "cacheWrite": 0
+      },
+      "calls": {
+        "read_file": 12,
+        "list_files": 2,
+        "write_file": 10,
+        "typecheck": 8
+      },
+      "answeredBy": [
+        "qwen3.5-9b-128k"
+      ],
+      "cost": 0,
+      "seconds": 450.366,
+      "score": {
+        "typecheck": true,
+        "typeErrors": 0,
+        "build": true,
+        "checks": [
+          {
+            "name": "a page without a session goes to the sign-in",
+            "pass": false,
+            "why": "locator.waitFor: Timeout 8000ms exceeded."
+          },
+          {
+            "name": "a wrong password shows what the server says",
+            "pass": true
+          },
+          {
+            "name": "signing in shows ten attendees and the total",
+            "pass": true
+          },
+          {
+            "name": "the list shows the answer to the latest search",
+            "pass": false,
+            "why": "2 attendees are shown for \"ada\""
+          },
+          {
+            "name": "an attendee is deleted after a confirmation",
+            "pass": false,
+            "why": "locator.click: Timeout 8000ms exceeded."
+          },
+          {
+            "name": "an expired token is renewed once and the request is sent again",
+            "pass": false,
+            "why": "POST /auth/refresh was sent 2 times"
+          }
+        ],
+        "validatorErrors": 0,
+        "findings": [],
+        "pass": false
+      }
+    },
+    {
+      "model": "qwen3.5-9b-128k",
+      "task": "list",
+      "condition": "punica-guides",
+      "rep": 1,
+      "dir": ".runs/2026-11-24T22-34-06-964Z/qwen3.5-9b-128k-list-punica-guides-1",
+      "stop": "turn-limit",
+      "turns": 40,
+      "usage": {
+        "input": 1496994,
+        "output": 12229,
+        "cacheRead": 0,
+        "cacheWrite": 0
+      },
+      "calls": {
+        "list_files": 5,
+        "read_file": 13,
+        "write_file": 14,
+        "form_search_api": 2,
+        "request_search_api": 2,
+        "components_search_components": 2,
+        "form_get_api": 8,
+        "request_get_api": 1,
+        "components_get_component": 4,
+        "typecheck": 1
+      },
+      "answeredBy": [
+        "qwen3.5-9b-128k"
+      ],
+      "cost": 0,
+      "seconds": 590.529,
+      "score": {
+        "typecheck": false,
+        "typeErrors": 29,
+        "build": false,
+        "buildOutput": "[38;5;249mt\u001b[0m\u001b[38;5;249me\u001b[0m\u001b[38;5;249mn\u001b[0m\u001b[38;5;249md\u001b[0m\u001b[38;5;249me\u001b[0m\u001b[38;5;249me\u001b[0m\u001b[38;5;249ms\u001b[0m\u001b[38;5;249m;\u001b[0m\n \u001b[38;5;240m   │\u001b[0m              ────┬────  \n \u001b[38;5;240m   │\u001b[0m                  ╰────── It can not be redeclared here\n\u001b[38;5;246m────╯\u001b[0m\n\n    at aggregateBindingErrorsIntoJsError (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/rolldown/dist/shared/error-CLo6EJKG.mjs:50:18)\n    at unwrapBindingResult (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/rolldown/dist/shared/error-CLo6EJKG.mjs:20:128)\n    at #build (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/rolldown/dist/shared/rolldown-AohEFLrh.mjs:146:34)\n    at async buildEnvironment (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/vite/dist/node/chunks/node.js:34787:66)\n    at async Object.build (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/vite/dist/node/chunks/node.js:35208:19)\n    at async Object.buildApp (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/vite/dist/node/chunks/node.js:35205:153)\n    at async CAC.<anonymous> (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/vite/dist/node/cli.js:789:3) {\n  errors: [Getter/Setter]\n}",
+        "checks": [
+          {
+            "name": "a page without a session goes to the sign-in",
+            "pass": false,
+            "why": "the application does not build"
+          },
+          {
+            "name": "a wrong password shows what the server says",
+            "pass": false,
+            "why": "the application does not build"
+          },
+          {
+            "name": "signing in shows ten attendees and the total",
+            "pass": false,
+            "why": "the application does not build"
+          },
+          {
+            "name": "the list shows the answer to the latest search",
+            "pass": false,
+            "why": "the application does not build"
+          },
+          {
+            "name": "an attendee is deleted after a confirmation",
+            "pass": false,
+            "why": "the application does not build"
+          },
+          {
+            "name": "an expired token is renewed once and the request is sent again",
+            "pass": false,
+            "why": "the application does not build"
+          }
+        ],
+        "validatorErrors": 0,
+        "findings": [],
+        "pass": false
+      }
+    },
+    {
+      "model": "qwen3.5-9b-128k",
+      "task": "list",
+      "condition": "punica-agents",
+      "rep": 1,
+      "dir": ".runs/2026-11-24T22-34-06-964Z/qwen3.5-9b-128k-list-punica-agents-1",
+      "stop": "turn-limit",
+      "turns": 40,
+      "usage": {
+        "input": 714974,
+        "output": 11321,
+        "cacheRead": 0,
+        "cacheWrite": 0
+      },
+      "calls": {
+        "list_files": 6,
+        "read_file": 9,
+        "form_get_api": 6,
+        "request_get_api": 4,
+        "components_search_components": 4,
+        "form_search_api": 3,
+        "request_search_api": 1,
+        "components_get_component": 6,
+        "write_file": 13
+      },
+      "answeredBy": [
+        "qwen3.5-9b-128k"
+      ],
+      "cost": 0,
+      "seconds": 422.741,
+      "score": {
+        "typecheck": false,
+        "typeErrors": 23,
+        "build": false,
+        "buildOutput": "[0m\u001b[38;5;249mt\u001b[0m\u001b[38;5;249m-\u001b[0m\u001b[38;5;249mf\u001b[0m\u001b[38;5;249me\u001b[0m\u001b[38;5;249mt\u001b[0m\u001b[38;5;249mc\u001b[0m\u001b[38;5;249mh\u001b[0m\u001b[38;5;249m\"\u001b[0m\u001b[38;5;249m;\u001b[0m\n \u001b[38;5;240m  │\u001b[0m          ──────┬─────  \n \u001b[38;5;240m  │\u001b[0m                ╰─────── Missing export\n\u001b[38;5;246m───╯\u001b[0m\n\n    at aggregateBindingErrorsIntoJsError (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/rolldown/dist/shared/error-CLo6EJKG.mjs:50:18)\n    at unwrapBindingResult (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/rolldown/dist/shared/error-CLo6EJKG.mjs:20:128)\n    at #build (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/rolldown/dist/shared/rolldown-AohEFLrh.mjs:146:34)\n    at async buildEnvironment (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/vite/dist/node/chunks/node.js:34787:66)\n    at async Object.build (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/vite/dist/node/chunks/node.js:35208:19)\n    at async Object.buildApp (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/vite/dist/node/chunks/node.js:35205:153)\n    at async CAC.<anonymous> (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/vite/dist/node/cli.js:789:3) {\n  errors: [Getter/Setter]\n}",
+        "checks": [
+          {
+            "name": "a page without a session goes to the sign-in",
+            "pass": false,
+            "why": "the application does not build"
+          },
+          {
+            "name": "a wrong password shows what the server says",
+            "pass": false,
+            "why": "the application does not build"
+          },
+          {
+            "name": "signing in shows ten attendees and the total",
+            "pass": false,
+            "why": "the application does not build"
+          },
+          {
+            "name": "the list shows the answer to the latest search",
+            "pass": false,
+            "why": "the application does not build"
+          },
+          {
+            "name": "an attendee is deleted after a confirmation",
+            "pass": false,
+            "why": "the application does not build"
+          },
+          {
+            "name": "an expired token is renewed once and the request is sent again",
+            "pass": false,
+            "why": "the application does not build"
+          }
+        ],
+        "validatorErrors": 3,
+        "findings": [
+          {
+            "library": "request",
+            "file": "src/api/client.ts",
+            "errors": 1,
+            "report": "1 problem:\nline 1 unknown-export: @punica/request-fetch does not export createClient. [fix: import it from \"@punica/request\"]"
+          },
+          {
+            "library": "form",
+            "file": "src/forms/Login.ts",
+            "errors": 2,
+            "report": "2 problems:\nline 2 unknown-export: @punica/form-kit does not export Submit. [fix: import it from \"@punica/form-service\"]\nline 3 unknown-export: @punica/form-service does not export SchemaValidation. [fix: import it from \"@punica/form-schema\"]"
+          }
+        ],
+        "pass": false
+      }
+    },
+    {
+      "model": "qwen3.5-9b-128k",
+      "task": "form",
+      "condition": "mainstream",
+      "rep": 2,
+      "dir": ".runs/2026-11-24T22-34-06-964Z/qwen3.5-9b-128k-form-mainstream-2",
+      "stop": "end_turn",
+      "turns": 29,
+      "usage": {
+        "input": 444488,
+        "output": 28152,
+        "cacheRead": 0,
+        "cacheWrite": 0
+      },
+      "calls": {
+        "list_files": 3,
+        "read_file": 6,
+        "write_file": 14,
+        "typecheck": 7
+      },
+      "answeredBy": [
+        "qwen3.5-9b-128k"
+      ],
+      "cost": 0,
+      "seconds": 912.152,
+      "score": {
+        "typecheck": true,
+        "typeErrors": 0,
+        "build": true,
+        "checks": [
+          {
+            "name": "nothing is sent while the form is invalid",
+            "pass": true
+          },
+          {
+            "name": "the server's message for a field is shown, and a corrected form is saved",
+            "pass": false,
+            "why": "locator.waitFor: Timeout 8000ms exceeded."
+          },
+          {
+            "name": "a message about one row and one about no field are shown, and go away",
+            "pass": false,
+            "why": "locator.waitFor: Timeout 8000ms exceeded."
+          }
+        ],
+        "validatorErrors": 0,
+        "findings": [],
+        "pass": false
+      }
+    },
+    {
+      "model": "qwen3.5-9b-128k",
+      "task": "form",
+      "condition": "punica-guides",
+      "rep": 2,
+      "dir": ".runs/2026-11-24T22-34-06-964Z/qwen3.5-9b-128k-form-punica-guides-2",
+      "stop": "turn-limit",
+      "turns": 40,
+      "usage": {
+        "input": 1063760,
+        "output": 11963,
+        "cacheRead": 0,
+        "cacheWrite": 0
+      },
+      "calls": {
+        "list_files": 6,
+        "read_file": 7,
+        "components_search_components": 3,
+        "form_search_api": 3,
+        "form_get_api": 17,
+        "request_get_api": 1,
+        "components_get_component": 1,
+        "write_file": 7,
+        "typecheck": 4,
+        "request_search_api": 1
+      },
+      "answeredBy": [
+        "qwen3.5-9b-128k"
+      ],
+      "cost": 0,
+      "seconds": 490.202,
+      "score": {
+        "typecheck": false,
+        "typeErrors": 5,
+        "build": false,
+        "buildOutput": "A\u001b[0m\u001b[38;5;249mt\u001b[0m\u001b[38;5;249mt\u001b[0m\u001b[38;5;249me\u001b[0m\u001b[38;5;249mn\u001b[0m\u001b[38;5;249md\u001b[0m\u001b[38;5;249me\u001b[0m\u001b[38;5;249me\u001b[0m\u001b[38;5;249m\"\u001b[0m\u001b[38;5;249m;\u001b[0m\n \u001b[38;5;240m  │\u001b[0m          ─────┬─────  \n \u001b[38;5;240m  │\u001b[0m               ╰─────── Missing export\n\u001b[38;5;246m───╯\u001b[0m\n\n    at aggregateBindingErrorsIntoJsError (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/rolldown/dist/shared/error-CLo6EJKG.mjs:50:18)\n    at unwrapBindingResult (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/rolldown/dist/shared/error-CLo6EJKG.mjs:20:128)\n    at #build (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/rolldown/dist/shared/rolldown-AohEFLrh.mjs:146:34)\n    at async buildEnvironment (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/vite/dist/node/chunks/node.js:34787:66)\n    at async Object.build (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/vite/dist/node/chunks/node.js:35208:19)\n    at async Object.buildApp (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/vite/dist/node/chunks/node.js:35205:153)\n    at async CAC.<anonymous> (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/vite/dist/node/cli.js:789:3) {\n  errors: [Getter/Setter]\n}",
+        "checks": [
+          {
+            "name": "nothing is sent while the form is invalid",
+            "pass": false,
+            "why": "the application does not build"
+          },
+          {
+            "name": "the server's message for a field is shown, and a corrected form is saved",
+            "pass": false,
+            "why": "the application does not build"
+          },
+          {
+            "name": "a message about one row and one about no field are shown, and go away",
+            "pass": false,
+            "why": "the application does not build"
+          }
+        ],
+        "validatorErrors": 1,
+        "findings": [
+          {
+            "library": "request",
+            "file": "src/api.ts",
+            "errors": 1,
+            "report": "1 problem:\nline 21 middleware-order: refreshToken after tokenAuth / cookie sends the request again with the old token: the request does not pass them a second time. [fix: put refreshToken before tokenAuth and cookie]"
+          }
+        ],
+        "pass": false
+      }
+    },
+    {
+      "model": "qwen3.5-9b-128k",
+      "task": "form",
+      "condition": "punica-agents",
+      "rep": 2,
+      "dir": ".runs/2026-11-24T22-34-06-964Z/qwen3.5-9b-128k-form-punica-agents-2",
+      "stop": "turn-limit",
+      "turns": 40,
+      "usage": {
+        "input": 770723,
+        "output": 9841,
+        "cacheRead": 0,
+        "cacheWrite": 0
+      },
+      "calls": {
+        "list_files": 4,
+        "read_file": 11,
+        "form_search_api": 1,
+        "request_search_api": 1,
+        "components_search_components": 2,
+        "components_get_component": 5,
+        "form_get_api": 10,
+        "request_get_api": 1,
+        "write_file": 12
+      },
+      "answeredBy": [
+        "qwen3.5-9b-128k"
+      ],
+      "cost": 0,
+      "seconds": 391.318,
+      "score": {
+        "typecheck": false,
+        "typeErrors": 4,
+        "build": false,
+        "buildOutput": "m\u001b[38;5;249m \u001b[0m@\u001b[38;5;249mT\u001b[0m\u001b[38;5;249me\u001b[0m\u001b[38;5;249mx\u001b[0m\u001b[38;5;249mt\u001b[0m\u001b[38;5;249mF\u001b[0m\u001b[38;5;249mi\u001b[0m\u001b[38;5;249me\u001b[0m\u001b[38;5;249ml\u001b[0m\u001b[38;5;249md\u001b[0m\u001b[38;5;249m(\u001b[0m\u001b[38;5;249m)\u001b[0m\n \u001b[38;5;240m   │\u001b[0m   ┬  \n \u001b[38;5;240m   │\u001b[0m   ╰── \n\u001b[38;5;246m────╯\u001b[0m\n\n    at aggregateBindingErrorsIntoJsError (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/rolldown/dist/shared/error-CLo6EJKG.mjs:50:18)\n    at unwrapBindingResult (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/rolldown/dist/shared/error-CLo6EJKG.mjs:20:128)\n    at #build (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/rolldown/dist/shared/rolldown-AohEFLrh.mjs:146:34)\n    at async buildEnvironment (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/vite/dist/node/chunks/node.js:34787:66)\n    at async Object.build (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/vite/dist/node/chunks/node.js:35208:19)\n    at async Object.buildApp (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/vite/dist/node/chunks/node.js:35205:153)\n    at async CAC.<anonymous> (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/vite/dist/node/cli.js:789:3) {\n  errors: [Getter/Setter]\n}",
+        "checks": [
+          {
+            "name": "nothing is sent while the form is invalid",
+            "pass": false,
+            "why": "the application does not build"
+          },
+          {
+            "name": "the server's message for a field is shown, and a corrected form is saved",
+            "pass": false,
+            "why": "the application does not build"
+          },
+          {
+            "name": "a message about one row and one about no field are shown, and go away",
+            "pass": false,
+            "why": "the application does not build"
+          }
+        ],
+        "validatorErrors": 4,
+        "findings": [
+          {
+            "library": "form",
+            "file": "src/forms/attendee.ts",
+            "errors": 3,
+            "report": "3 problems:\nline 1 unknown-export: @punica/form-kit does not export Schema. [fix: import it from \"@punica/form-schema\"]\nline 2 unknown-export: @punica/form-service does not export SchemaValidation. [fix: import it from \"@punica/form-schema\"]\nline 2 unknown-export: @punica/form-service does not export Services. [fix: import it from \"@punica/form\"]"
+          },
+          {
+            "library": "form",
+            "file": "src/pages/NewAttendee.tsx",
+            "errors": 1,
+            "report": "1 problem:\nline 5 unknown-export: @punica/form-kit/react does not export useFormController. [fix: import it from \"@punica/form-react\"]"
+          }
+        ],
+        "pass": false
+      }
+    },
+    {
+      "model": "qwen3.5-9b-128k",
+      "task": "list",
+      "condition": "mainstream",
+      "rep": 2,
+      "dir": ".runs/2026-11-24T22-34-06-964Z/qwen3.5-9b-128k-list-mainstream-2",
+      "stop": "end_turn",
+      "turns": 40,
+      "usage": {
+        "input": 817121,
+        "output": 34805,
+        "cacheRead": 0,
+        "cacheWrite": 0
+      },
+      "calls": {
+        "list_files": 7,
+        "read_file": 6,
+        "write_file": 19,
+        "typecheck": 11
+      },
+      "answeredBy": [
+        "qwen3.5-9b-128k"
+      ],
+      "cost": 0,
+      "seconds": 1134.705,
+      "score": {
+        "typecheck": true,
+        "typeErrors": 0,
+        "build": true,
+        "checks": [
+          {
+            "name": "a page without a session goes to the sign-in",
+            "pass": true
+          },
+          {
+            "name": "a wrong password shows what the server says",
+            "pass": true
+          },
+          {
+            "name": "signing in shows ten attendees and the total",
+            "pass": true
+          },
+          {
+            "name": "the list shows the answer to the latest search",
+            "pass": true
+          },
+          {
+            "name": "an attendee is deleted after a confirmation",
+            "pass": true
+          },
+          {
+            "name": "an expired token is renewed once and the request is sent again",
+            "pass": false,
+            "why": "POST /auth/refresh was sent 2 times"
+          }
+        ],
+        "validatorErrors": 0,
+        "findings": [],
+        "pass": false
+      }
+    },
+    {
+      "model": "qwen3.5-9b-128k",
+      "task": "list",
+      "condition": "punica-guides",
+      "rep": 2,
+      "dir": ".runs/2026-11-24T22-34-06-964Z/qwen3.5-9b-128k-list-punica-guides-2",
+      "error": "stream ended without producing a Message with role=assistant",
+      "stop": "turn-limit",
+      "turns": 32,
+      "usage": {
+        "input": 750536,
+        "output": 14306,
+        "cacheRead": 0,
+        "cacheWrite": 0
+      },
+      "calls": {
+        "list_files": 3,
+        "read_file": 8,
+        "write_file": 13,
+        "form_get_api": 3,
+        "components_get_component": 4,
+        "components_search_components": 1,
+        "typecheck": 2,
+        "request_search_api": 1,
+        "form_search_api": 1
+      },
+      "answeredBy": [
+        "qwen3.5-9b-128k"
+      ],
+      "cost": 0,
+      "seconds": 550.199
+    },
+    {
+      "model": "qwen3.5-9b-128k",
+      "task": "list",
+      "condition": "punica-agents",
+      "rep": 2,
+      "dir": ".runs/2026-11-24T22-34-06-964Z/qwen3.5-9b-128k-list-punica-agents-2",
+      "stop": "turn-limit",
+      "turns": 40,
+      "usage": {
+        "input": 533271,
+        "output": 7881,
+        "cacheRead": 0,
+        "cacheWrite": 0
+      },
+      "calls": {
+        "list_files": 6,
+        "read_file": 7,
+        "write_file": 16,
+        "form_search_api": 2,
+        "form_get_api": 9,
+        "request_get_api": 2,
+        "request_search_api": 1,
+        "components_search_components": 2,
+        "components_get_component": 2
+      },
+      "answeredBy": [
+        "qwen3.5-9b-128k"
+      ],
+      "cost": 0,
+      "seconds": 300.063,
+      "score": {
+        "typecheck": false,
+        "typeErrors": 26,
+        "build": false,
+        "buildOutput": ";5;249mr\u001b[0m\u001b[38;5;249me\u001b[0m\u001b[38;5;249ms\u001b[0m\u001b[38;5;249mh\u001b[0m\u001b[38;5;249m \u001b[0m\u001b[38;5;249m}\u001b[0m\u001b[38;5;249m;\u001b[0m\n \u001b[38;5;240m   │\u001b[0m                      ─────┬─────  \n \u001b[38;5;240m   │\u001b[0m                           ╰─────── It cannot be redeclared here\n\u001b[38;5;246m────╯\u001b[0m\n\n    at aggregateBindingErrorsIntoJsError (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/rolldown/dist/shared/error-CLo6EJKG.mjs:50:18)\n    at unwrapBindingResult (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/rolldown/dist/shared/error-CLo6EJKG.mjs:20:128)\n    at #build (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/rolldown/dist/shared/rolldown-AohEFLrh.mjs:146:34)\n    at async buildEnvironment (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/vite/dist/node/chunks/node.js:34787:66)\n    at async Object.build (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/vite/dist/node/chunks/node.js:35208:19)\n    at async Object.buildApp (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/vite/dist/node/chunks/node.js:35205:153)\n    at async CAC.<anonymous> (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/vite/dist/node/cli.js:789:3) {\n  errors: [Getter/Setter]\n}",
+        "checks": [
+          {
+            "name": "a page without a session goes to the sign-in",
+            "pass": false,
+            "why": "the application does not build"
+          },
+          {
+            "name": "a wrong password shows what the server says",
+            "pass": false,
+            "why": "the application does not build"
+          },
+          {
+            "name": "signing in shows ten attendees and the total",
+            "pass": false,
+            "why": "the application does not build"
+          },
+          {
+            "name": "the list shows the answer to the latest search",
+            "pass": false,
+            "why": "the application does not build"
+          },
+          {
+            "name": "an attendee is deleted after a confirmation",
+            "pass": false,
+            "why": "the application does not build"
+          },
+          {
+            "name": "an expired token is renewed once and the request is sent again",
+            "pass": false,
+            "why": "the application does not build"
+          }
+        ],
+        "validatorErrors": 5,
+        "findings": [
+          {
+            "library": "request",
+            "file": "src/api/client.ts",
+            "errors": 1,
+            "report": "1 problem:\nline 1 unknown-export: @punica/request-fetch does not export createClient. [fix: import it from \"@punica/request\"]"
+          },
+          {
+            "library": "form",
+            "file": "src/forms/LoginForm.ts",
+            "errors": 3,
+            "report": "3 problems:\nline 1 unknown-export: @punica/form does not export Schema. [fix: import it from \"@punica/form-schema\"]\nline 1 unknown-export: @punica/form does not export FormKit. [fix: import it from \"@punica/form-kit\"]\nline 3 unknown-export: @punica/form-kit does not export Submit. [fix: import it from \"@punica/form-service\"]"
+          },
+          {
+            "library": "form",
+            "file": "src/pages/Login.tsx",
+            "errors": 1,
+            "report": "1 problem:\nline 1 unknown-export: @punica/form-react does not export Submit. [fix: import it from \"@punica/form-service\"]"
+          }
+        ],
+        "pass": false
+      }
+    },
+    {
+      "model": "qwen3.5-9b-128k",
+      "task": "form",
+      "condition": "mainstream",
+      "rep": 3,
+      "dir": ".runs/2026-11-24T22-34-06-964Z/qwen3.5-9b-128k-form-mainstream-3",
+      "stop": "turn-limit",
+      "turns": 40,
+      "usage": {
+        "input": 788467,
+        "output": 31069,
+        "cacheRead": 0,
+        "cacheWrite": 0
+      },
+      "calls": {
+        "list_files": 2,
+        "read_file": 9,
+        "write_file": 24,
+        "typecheck": 9
+      },
+      "answeredBy": [
+        "qwen3.5-9b-128k"
+      ],
+      "cost": 0,
+      "seconds": 1020.27,
+      "score": {
+        "typecheck": true,
+        "typeErrors": 0,
+        "build": true,
+        "checks": [
+          {
+            "name": "nothing is sent while the form is invalid",
+            "pass": false,
+            "why": "POST /attendees was sent for an empty form"
+          },
+          {
+            "name": "the server's message for a field is shown, and a corrected form is saved",
+            "pass": true
+          },
+          {
+            "name": "a message about one row and one about no field are shown, and go away",
+            "pass": true
+          }
+        ],
+        "validatorErrors": 0,
+        "findings": [],
+        "pass": false
+      }
+    },
+    {
+      "model": "qwen3.5-9b-128k",
+      "task": "form",
+      "condition": "punica-guides",
+      "rep": 3,
+      "dir": ".runs/2026-11-24T22-34-06-964Z/qwen3.5-9b-128k-form-punica-guides-3",
+      "stop": "turn-limit",
+      "turns": 40,
+      "usage": {
+        "input": 964274,
+        "output": 15749,
+        "cacheRead": 0,
+        "cacheWrite": 0
+      },
+      "calls": {
+        "list_files": 6,
+        "read_file": 8,
+        "write_file": 19,
+        "components_search_components": 2,
+        "components_get_component": 1,
+        "form_search_api": 1,
+        "form_get_api": 8,
+        "typecheck": 1
+      },
+      "answeredBy": [
+        "qwen3.5-9b-128k"
+      ],
+      "cost": 0,
+      "seconds": 594.258,
+      "score": {
+        "typecheck": false,
+        "typeErrors": 2,
+        "build": true,
+        "checks": [
+          {
+            "name": "nothing is sent while the form is invalid",
+            "pass": true
+          },
+          {
+            "name": "the server's message for a field is shown, and a corrected form is saved",
+            "pass": false,
+            "why": "locator.fill: Timeout 8000ms exceeded."
+          },
+          {
+            "name": "a message about one row and one about no field are shown, and go away",
+            "pass": false,
+            "why": "locator.fill: Timeout 8000ms exceeded."
+          }
+        ],
+        "validatorErrors": 0,
+        "findings": [],
+        "pass": false
+      }
+    },
+    {
+      "model": "qwen3.5-9b-128k",
+      "task": "form",
+      "condition": "punica-agents",
+      "rep": 3,
+      "dir": ".runs/2026-11-24T22-34-06-964Z/qwen3.5-9b-128k-form-punica-agents-3",
+      "stop": "turn-limit",
+      "turns": 40,
+      "usage": {
+        "input": 873848,
+        "output": 15184,
+        "cacheRead": 0,
+        "cacheWrite": 0
+      },
+      "calls": {
+        "list_files": 4,
+        "read_file": 11,
+        "form_search_api": 2,
+        "request_search_api": 1,
+        "components_search_components": 1,
+        "components_get_component": 5,
+        "form_get_api": 13,
+        "write_file": 15,
+        "typecheck": 1
+      },
+      "answeredBy": [
+        "qwen3.5-9b-128k"
+      ],
+      "cost": 0,
+      "seconds": 564.891,
+      "score": {
+        "typecheck": false,
+        "typeErrors": 30,
+        "build": false,
+        "buildOutput": "249mt\u001b[0m\u001b[38;5;249m/\u001b[0m\u001b[38;5;249mr\u001b[0m\u001b[38;5;249me\u001b[0m\u001b[38;5;249ma\u001b[0m\u001b[38;5;249mc\u001b[0m\u001b[38;5;249mt\u001b[0m\u001b[38;5;249m\"\u001b[0m\u001b[38;5;249m;\u001b[0m\n \u001b[38;5;240m  │\u001b[0m          ────────┬────────  \n \u001b[38;5;240m  │\u001b[0m                  ╰────────── Missing export\n\u001b[38;5;246m───╯\u001b[0m\n\n    at aggregateBindingErrorsIntoJsError (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/rolldown/dist/shared/error-CLo6EJKG.mjs:50:18)\n    at unwrapBindingResult (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/rolldown/dist/shared/error-CLo6EJKG.mjs:20:128)\n    at #build (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/rolldown/dist/shared/rolldown-AohEFLrh.mjs:146:34)\n    at async buildEnvironment (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/vite/dist/node/chunks/node.js:34787:66)\n    at async Object.build (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/vite/dist/node/chunks/node.js:35208:19)\n    at async Object.buildApp (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/vite/dist/node/chunks/node.js:35205:153)\n    at async CAC.<anonymous> (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/vite/dist/node/cli.js:789:3) {\n  errors: [Getter/Setter]\n}",
+        "checks": [
+          {
+            "name": "nothing is sent while the form is invalid",
+            "pass": false,
+            "why": "the application does not build"
+          },
+          {
+            "name": "the server's message for a field is shown, and a corrected form is saved",
+            "pass": false,
+            "why": "the application does not build"
+          },
+          {
+            "name": "a message about one row and one about no field are shown, and go away",
+            "pass": false,
+            "why": "the application does not build"
+          }
+        ],
+        "validatorErrors": 6,
+        "findings": [
+          {
+            "library": "request",
+            "file": "src/api/client.ts",
+            "errors": 1,
+            "report": "1 problem:\nline 1 unknown-export: @punica/request-fetch does not export createClient. [fix: import it from \"@punica/request\"]"
+          },
+          {
+            "library": "form",
+            "file": "src/pages/NewAttendee.tsx",
+            "errors": 5,
+            "report": "5 problems:\nline 2 unknown-export: @punica/form does not export SchemaValidation. [fix: import it from \"@punica/form-schema\"]\nline 2 unknown-export: @punica/form does not export Validate. [fix: import it from \"@punica/form-service\"]\nline 2 unknown-export: @punica/form does not export Submit. [fix: import it from \"@punica/form-service\"]\nline 2 unknown-export: @punica/form does not export SetErrors. [fix: import it from \"@punica/form-service\"]\nline 4 unknown-export: @punica/form-kit/react does not export useFormController. [fix: import it from \"@punica/form-react\"]"
+          }
+        ],
+        "pass": false
+      }
+    },
+    {
+      "model": "qwen3.5-9b-128k",
+      "task": "list",
+      "condition": "mainstream",
+      "rep": 3,
+      "dir": ".runs/2026-11-24T22-34-06-964Z/qwen3.5-9b-128k-list-mainstream-3",
+      "stop": "turn-limit",
+      "turns": 40,
+      "usage": {
+        "input": 586617,
+        "output": 22534,
+        "cacheRead": 0,
+        "cacheWrite": 0
+      },
+      "calls": {
+        "list_files": 6,
+        "read_file": 10,
+        "write_file": 19,
+        "typecheck": 8
+      },
+      "answeredBy": [
+        "qwen3.5-9b-128k"
+      ],
+      "cost": 0,
+      "seconds": 759.415,
+      "score": {
+        "typecheck": false,
+        "typeErrors": 1,
+        "build": true,
+        "checks": [
+          {
+            "name": "a page without a session goes to the sign-in",
+            "pass": false,
+            "why": "locator.waitFor: Timeout 8000ms exceeded."
+          },
+          {
+            "name": "a wrong password shows what the server says",
+            "pass": false,
+            "why": "locator.waitFor: Timeout 8000ms exceeded."
+          },
+          {
+            "name": "signing in shows ten attendees and the total",
+            "pass": false,
+            "why": "locator.waitFor: Timeout 8000ms exceeded."
+          },
+          {
+            "name": "the list shows the answer to the latest search",
+            "pass": false,
+            "why": "locator.waitFor: Timeout 8000ms exceeded."
+          },
+          {
+            "name": "an attendee is deleted after a confirmation",
+            "pass": false,
+            "why": "locator.waitFor: Timeout 8000ms exceeded."
+          },
+          {
+            "name": "an expired token is renewed once and the request is sent again",
+            "pass": false,
+            "why": "locator.waitFor: Timeout 8000ms exceeded."
+          }
+        ],
+        "validatorErrors": 0,
+        "findings": [],
+        "pass": false
+      }
+    },
+    {
+      "model": "qwen3.5-9b-128k",
+      "task": "list",
+      "condition": "punica-guides",
+      "rep": 3,
+      "dir": ".runs/2026-11-24T22-34-06-964Z/qwen3.5-9b-128k-list-punica-guides-3",
+      "stop": "turn-limit",
+      "turns": 40,
+      "usage": {
+        "input": 1144584,
+        "output": 21159,
+        "cacheRead": 0,
+        "cacheWrite": 0
+      },
+      "calls": {
+        "list_files": 3,
+        "read_file": 10,
+        "form_get_api": 10,
+        "request_get_api": 1,
+        "components_search_components": 1,
+        "components_get_component": 2,
+        "write_file": 16,
+        "form_search_api": 2,
+        "typecheck": 4
+      },
+      "answeredBy": [
+        "qwen3.5-9b-128k"
+      ],
+      "cost": 0,
+      "seconds": 797.115,
+      "score": {
+        "typecheck": false,
+        "typeErrors": 4,
+        "build": true,
+        "checks": [
+          {
+            "name": "a page without a session goes to the sign-in",
+            "pass": false,
+            "why": "locator.waitFor: Timeout 8000ms exceeded."
+          },
+          {
+            "name": "a wrong password shows what the server says",
+            "pass": false,
+            "why": "locator.waitFor: Timeout 8000ms exceeded."
+          },
+          {
+            "name": "signing in shows ten attendees and the total",
+            "pass": false,
+            "why": "locator.waitFor: Timeout 8000ms exceeded."
+          },
+          {
+            "name": "the list shows the answer to the latest search",
+            "pass": false,
+            "why": "locator.waitFor: Timeout 8000ms exceeded."
+          },
+          {
+            "name": "an attendee is deleted after a confirmation",
+            "pass": false,
+            "why": "locator.waitFor: Timeout 8000ms exceeded."
+          },
+          {
+            "name": "an expired token is renewed once and the request is sent again",
+            "pass": false,
+            "why": "locator.waitFor: Timeout 8000ms exceeded."
+          }
+        ],
+        "validatorErrors": 2,
+        "findings": [
+          {
+            "library": "form",
+            "file": "src/pages/Login.tsx",
+            "errors": 2,
+            "report": "2 problems:\nline 132 service-call: Form items have no setValue method. [fix: await controller.getService(SetValue).run(property, value)]\nline 149 service-call: Form items have no setValue method. [fix: await controller.getService(SetValue).run(property, value)]"
+          }
+        ],
+        "pass": false
+      }
+    },
+    {
+      "model": "qwen3.5-9b-128k",
+      "task": "list",
+      "condition": "punica-agents",
+      "rep": 3,
+      "dir": ".runs/2026-11-24T22-34-06-964Z/qwen3.5-9b-128k-list-punica-agents-3",
+      "stop": "turn-limit",
+      "turns": 40,
+      "usage": {
+        "input": 808847,
+        "output": 20838,
+        "cacheRead": 0,
+        "cacheWrite": 0
+      },
+      "calls": {
+        "list_files": 6,
+        "read_file": 11,
+        "components_search_components": 1,
+        "form_search_api": 1,
+        "request_search_api": 1,
+        "components_get_component": 2,
+        "form_get_api": 4,
+        "request_get_api": 1,
+        "write_file": 22,
+        "typecheck": 1
+      },
+      "answeredBy": [
+        "qwen3.5-9b-128k"
+      ],
+      "cost": 0,
+      "seconds": 724.4,
+      "score": {
+        "typecheck": false,
+        "typeErrors": 23,
+        "build": false,
+        "buildOutput": "249m/\u001b[0m\u001b[38;5;249mr\u001b[0m\u001b[38;5;249me\u001b[0m\u001b[38;5;249ma\u001b[0m\u001b[38;5;249mc\u001b[0m\u001b[38;5;249mt\u001b[0m\u001b[38;5;249m\"\u001b[0m\u001b[38;5;249m;\u001b[0m\n \u001b[38;5;240m  │\u001b[0m                             ───┬──  \n \u001b[38;5;240m  │\u001b[0m                                ╰──── Missing export\n\u001b[38;5;246m───╯\u001b[0m\n\n    at aggregateBindingErrorsIntoJsError (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/rolldown/dist/shared/error-CLo6EJKG.mjs:50:18)\n    at unwrapBindingResult (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/rolldown/dist/shared/error-CLo6EJKG.mjs:20:128)\n    at #build (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/rolldown/dist/shared/rolldown-AohEFLrh.mjs:146:34)\n    at async buildEnvironment (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/vite/dist/node/chunks/node.js:34787:66)\n    at async Object.build (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/vite/dist/node/chunks/node.js:35208:19)\n    at async Object.buildApp (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/vite/dist/node/chunks/node.js:35205:153)\n    at async CAC.<anonymous> (file:///Users/sezgin/Desktop/work/punicalab/library/punica-starter/eval/.stacks/punica/node_modules/vite/dist/node/cli.js:789:3) {\n  errors: [Getter/Setter]\n}",
+        "checks": [
+          {
+            "name": "a page without a session goes to the sign-in",
+            "pass": false,
+            "why": "the application does not build"
+          },
+          {
+            "name": "a wrong password shows what the server says",
+            "pass": false,
+            "why": "the application does not build"
+          },
+          {
+            "name": "signing in shows ten attendees and the total",
+            "pass": false,
+            "why": "the application does not build"
+          },
+          {
+            "name": "the list shows the answer to the latest search",
+            "pass": false,
+            "why": "the application does not build"
+          },
+          {
+            "name": "an attendee is deleted after a confirmation",
+            "pass": false,
+            "why": "the application does not build"
+          },
+          {
+            "name": "an expired token is renewed once and the request is sent again",
+            "pass": false,
+            "why": "the application does not build"
+          }
+        ],
+        "validatorErrors": 6,
+        "findings": [
+          {
+            "library": "form",
+            "file": "src/forms/login.ts",
+            "errors": 2,
+            "report": "2 problems:\nline 2 unknown-export: @punica/form-schema does not export Rules. [fix: import it from \"@punica/form-kit\"]\nline 3 unknown-export: @punica/form-kit does not export Submit. [fix: import it from \"@punica/form-service\"]"
+          },
+          {
+            "library": "form",
+            "file": "src/pages/Attendees.tsx",
+            "errors": 1,
+            "report": "1 problem:\nline 3 unknown-export: @punica/form-kit/react does not export Submit. [fix: import it from \"@punica/form-service\"]"
+          },
+          {
+            "library": "form",
+            "file": "src/pages/Login.tsx",
+            "errors": 3,
+            "report": "3 problems:\nline 3 unknown-export: @punica/form-kit/react does not export useFormController. [fix: import it from \"@punica/form-react\"]\nline 3 unknown-export: @punica/form-kit/react does not export Submit. [fix: import it from \"@punica/form-service\"]\nline 4 unknown-export: @punica/form does not export FormControllerState. [fix: import it from \"@punica/form-react\"]"
+          }
+        ],
+        "pass": false
+      }
+    }
+  ]
+}
