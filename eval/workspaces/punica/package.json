@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": { "typecheck": "tsc --noEmit", "build": "vite build" },
   "dependencies": {
-    "@punica/components": "^2.6.2",
+    "@punica/components": "^2.7.0",
     "@punica/form": "^2.3.3",
     "@punica/form-kit": "^0.7.3",
     "@punica/form-react": "^0.2.0",
@@ -20,9 +20,9 @@
     "zod": "^4.6.7"
   },
   "devDependencies": {
-    "@punica/components-mcp": "^0.9.1",
+    "@punica/components-mcp": "^0.10.0",
     "@punica/form-mcp": "^0.10.1",
-    "@punica/request-mcp": "^0.5.1",
+    "@punica/request-mcp": "^0.6.0",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.3.0",
