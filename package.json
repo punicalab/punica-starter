@@ -14,7 +14,7 @@
     "e2e": "playwright test"
   },
   "dependencies": {
-    "@punica/components": "^2.6.0",
+    "@punica/components": "^2.6.2",
     "@punica/form": "^2.3.3",
     "@punica/form-kit": "^0.7.3",
     "@punica/form-react": "^0.2.0",
