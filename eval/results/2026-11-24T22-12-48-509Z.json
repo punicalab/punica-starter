@@ -1,0 +1,64 @@
+{
+  "models": [
+    "qwen3.5-9b-128k"
+  ],
+  "conditions": [
+    "mainstream"
+  ],
+  "effort": "medium",
+  "reps": 1,
+  "versions": {},
+  "spent": 0,
+  "results": [
+    {
+      "model": "qwen3.5-9b-128k",
+      "task": "form",
+      "condition": "mainstream",
+      "rep": 1,
+      "dir": ".runs/2026-11-24T22-12-48-509Z/qwen3.5-9b-128k-form-mainstream-1",
+      "stop": "end_turn",
+      "turns": 25,
+      "usage": {
+        "input": 506480,
+        "output": 37451,
+        "cacheRead": 0,
+        "cacheWrite": 0
+      },
+      "calls": {
+        "list_files": 2,
+        "read_file": 7,
+        "write_file": 11,
+        "typecheck": 7
+      },
+      "answeredBy": [
+        "qwen3.5-9b-128k"
+      ],
+      "cost": 0,
+      "seconds": 1250.294,
+      "score": {
+        "typecheck": true,
+        "typeErrors": 0,
+        "build": true,
+        "checks": [
+          {
+            "name": "nothing is sent while the form is invalid",
+            "pass": true
+          },
+          {
+            "name": "the server's message for a field is shown, and a corrected form is saved",
+            "pass": false,
+            "why": "locator.waitFor: Timeout 8000ms exceeded."
+          },
+          {
+            "name": "a message about one row and one about no field are shown, and go away",
+            "pass": false,
+            "why": "locator.waitFor: Timeout 8000ms exceeded."
+          }
+        ],
+        "validatorErrors": 0,
+        "findings": [],
+        "pass": false
+      }
+    }
+  ]
+}
